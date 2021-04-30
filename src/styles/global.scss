@@ -1,0 +1,30 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font: 16px "Poppins", Arial, sans-serif;
+  color: #121214;
+  background: #ddd;
+}
+
+input,
+textarea {
+  font-family: "Poppins";
+  font-size: 1rem;
+}
+
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 2.5rem 1rem;
+}
+
+button,
+.checkmark {
+  cursor: pointer;
+}
+
+
