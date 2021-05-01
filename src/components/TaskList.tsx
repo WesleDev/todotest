@@ -13,14 +13,25 @@ export function TaskList() {
   const [payload, setPayload] = useState<Task>({});
   const [isEdit, setIsEdit] = useState(false);
 
+  const handleGetTasks = useCallback(() => {
+    api
+      .get("/tarefas")
+      .then(({ data }) => {
+        setTasks(data);
+      })
+      .catch(() => {
+        alert("Erro ao consultar suas tarefas, tente novamente mais tarde");
+      });
+  }, []);
+
   function handleCreateNewTask() {
-    // Cria uma nova task com um id random, não permita criar caso o título seja vazio.
+    // Cria uma nova task, não permite criar caso o título seja vazio.
     if (!payload.titulo) return;
     const newTask = { ...payload, isComplete: false };
 
     api
       .post("/tarefas", newTask)
-      .then((data) => {
+      .then(() => {
         setPayload({ titulo: "", descricao: "" });
         handleGetTasks();
       })
@@ -28,17 +39,6 @@ export function TaskList() {
         alert("Erro ao criar nova tarefa, tente novamente mais tarde");
       });
   }
-
-  const handleGetTasks = useCallback(() => {
-    api
-      .get("/tarefas")
-      .then(({ data }) => {
-        setTasks(data);
-      })
-      .catch((erro) => {
-        alert("Erro ao consultar suas tarefas, tente novamente mais tarde");
-      });
-  }, []);
 
   const handleSetEditValues = useCallback((task) => {
     setIsEdit(true);
@@ -67,8 +67,7 @@ export function TaskList() {
       })
       .then(() => {
         handleGetTasks();
-      })
-      .catch((erro) => {});
+      });
   }
 
   function handleRemoveTask(id: number | undefined) {
@@ -94,6 +93,7 @@ export function TaskList() {
           <h2>MINHAS TASKS</h2>
         </div>
       </header>
+      
       <section className="task-list container">
         <header>
           <div className="input-group">
@@ -121,7 +121,7 @@ export function TaskList() {
               data-testid="add-task-button"
               onClick={handleEditTask}
             >
-              Editar
+              Salvar
             </button>
           ) : (
             <button
